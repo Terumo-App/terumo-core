@@ -1,6 +1,6 @@
 # Terumo Service Search Monolith
 
-This repository, `terumo-service-search-monolith`, contains the backend of the Terumo application.
+This repository, `terumo-core`, contains the backend of the Terumo application.
 
 ## Terumo: Contact-Based Image Retrieval Tool for Renal Pathologists
 
@@ -28,69 +28,7 @@ In order to access the Swagger API Documentation go to: `http://localhost:5000/d
 The project folder structure is presented in the following tree view:
 
 ```
-terumo-service-search-monolith/
-├───src
-│   │   app.py                   # Application entry point where endpoints are located
-│   │   image_database.db
-│   │
-│   ├───image_module             # Module responsible for serving images
-│   │       service.py
-│   │
-│   ├───image_storage
-│   │       . gitkeep
-│   │
-│   └───search_module
-│       │   service.py           # This service integrates the subtasks needed to perform the image search
-│       │
-│       ├───binary_models        # This module implements the binary models and performs image transformations needed to perform inference.
-│       │   │   binary_base_model.py
-│       │   │   binary_extractor_imp.py
-│       │   │   binary_extractor_interface.py
-│       │   │   model.py
-│       │   │
-│       │   └───artifacts        # Where the model weights are located
-│       │
-│       ├───db_sqllite           # Module sql responsible for abstracting persistence functionalities from images sent in queries
-│       │       sqllite_db_imp.py
-│       │       sqllite_db_interface.py
-│       │       sqllite_image_schema.py
-│       │
-│       ├───db_vector_index      # Where the similarity calculation and search is done
-│       │       database_imp.py
-│       │       db_binary_vector.npy
-│       │       image_db_index.csv
-│       │       vector_db_interface.py
-│       │
-│       ├───embedding_model      # To be implemented yet
-│       └───schema
-│               attribute.py
-│               image.py
-│               search_request.py
-│        
-├───.github                     # Devops files
-│   └───workflows
-│           01-continuos_integration.yml
-│           02-continuos_delivery.yml
-├───scripts                     # Scripts to build and run docker images
-│       build_container.sh
-│       container_all.bat
-│       container_all.sh
-│       push_image.sh
-│       run_container.sh
-│
-│
-├───tests
-│
-├──  .gitignore
-├──  Dockerfile
-├──  image_database.db             # Database file
-├──  LICENSE
-├──  Makefile
-├──  Pipfile
-├──  Pipfile.lock
-├──  pyproject.toml
-├──  README.md
-├──  requirements.txt
+
 
 ```
 
