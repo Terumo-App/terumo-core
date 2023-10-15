@@ -1,9 +1,13 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_pagination import add_pagination
 
 from authentication.adapters.web.routes.signup_route import signup_router
 from collection_management.adapters.web.routes.collection_route import (
-    collection_router,
+    collection_router
+)
+from collection_management.adapters.web.routes.image_route import (
+    image_router
 )
 from config.environment import get_environment_variables
 
@@ -26,7 +30,9 @@ app.add_middleware(
 
 app.include_router(signup_router)
 app.include_router(collection_router)
+app.include_router(image_router)
 
+add_pagination(app) 
 
 if __name__ == '__main__':
     import uvicorn

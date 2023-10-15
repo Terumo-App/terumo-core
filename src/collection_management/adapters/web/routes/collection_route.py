@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from collection_management.adapters.cytomine_server.cytomine_repository import (
-    CytomineRepository,
+from collection_management.adapters.cytomine_server.collection_repository_imp import (
+    CollectionRepositoryImp,
 )
 from collection_management.adapters.web.routes.requests import (
     CollectionCretionRequest,
-    CollectionRequest,
+    BasicRequest,
 )
-from collection_management.usecase.create_collection_usecase import (
+from collection_management.usecase.collection_create_usecase import (
     CreateColllectionUseCase,
 )
-from collection_management.usecase.list_collections_usecase import (
+from collection_management.usecase.collections_list_usecase import (
     ListCollectionUseCase,
 )
 from config.environment import get_environment_variables
@@ -21,10 +21,10 @@ collection_router = APIRouter(prefix='/v1/collection')
 
 
 @collection_router.post('/')
-def get_collections(body: CollectionRequest):
+def get_collections(body: BasicRequest):
     try:
         list_collection_usecase = ListCollectionUseCase(
-            CytomineRepository(env, body.public_key, body.private_key)
+            CollectionRepositoryImp(env, body.public_key, body.private_key)
         )
 
         projects = list_collection_usecase.execute()
@@ -38,7 +38,7 @@ def get_collections(body: CollectionRequest):
 def create_collection(body: CollectionCretionRequest):
     try:
         create_collection_usecase = CreateColllectionUseCase(
-            CytomineRepository(env, body.public_key, body.private_key)
+            CollectionRepositoryImp(env, body.public_key, body.private_key)
         )
 
         project = create_collection_usecase.execute(body.collection_name)

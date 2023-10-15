@@ -1,10 +1,10 @@
 from collection_management.domain.collection.collection_repository_interface import (
-    CollectionRepository,
+    CollectionRepositoryInterface,
 )
 
 
 class CreateColllectionUseCase:
-    def __init__(self, collection_repository: CollectionRepository):
+    def __init__(self, collection_repository: CollectionRepositoryInterface):
         self._collection_repository = collection_repository
 
     def execute(self, collection_name: str) -> int:

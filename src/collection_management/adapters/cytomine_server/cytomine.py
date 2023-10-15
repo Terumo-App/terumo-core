@@ -1,7 +1,7 @@
 from typing import List
 
 from cytomine import Cytomine
-from cytomine.models import Project, ProjectCollection, User, UserCollection
+from cytomine.models import Project, ProjectCollection, ImageInstanceCollection, ImageInstance 
 
 from collection_management.domain.collection.collection_entity import (
     CollectionEntity,
@@ -47,3 +47,12 @@ class CytomineWrapper:
             if proj_list:
                 return proj_list.pop()
             return False
+
+    def list_images(self, collection_id: int) -> List[ImageInstance]:
+        with Cytomine(
+            host=self._host,
+            public_key=self._public_key,
+            private_key=self._private_key,
+        ):
+            images = ImageInstanceCollection().fetch_with_filter("project", collection_id)
+            return images.data()

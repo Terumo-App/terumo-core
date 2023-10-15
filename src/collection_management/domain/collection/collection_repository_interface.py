@@ -6,7 +6,7 @@ from collection_management.domain.collection.collection_entity import (
 )
 
 
-class CollectionRepository(ABC):
+class CollectionRepositoryInterface(ABC):
     @abstractmethod
     def create_collection(
         self, collection_name: str

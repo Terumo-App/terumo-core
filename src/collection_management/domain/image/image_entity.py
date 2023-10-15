@@ -7,21 +7,23 @@ class Image(ABC):
     def id(self) -> int:
         pass
 
-    @property
-    @abstractmethod
-    def filename(self) -> str:
-        pass
+
+class Picture:
+    def __init__(self, large, medium, thumbnail):
+        self.large = large
+        self.medium = medium
+        self.thumbnail = thumbnail
 
 
-class ImageEntity(Image):
-    def __init__(self, user_id: int, filename: str):
-        self._id = user_id
-        self._filename = filename
+class Name:
+    def __init__(self, last):
+        self.last = last
 
-    @property
-    def id(self) -> int:
-        return self._id
 
-    @property
-    def filename(self) -> str:
-        return self._filename
+class ImageEntity:
+    def __init__(self, id: int, image_url: str, picture: Picture, name:Name):
+        self.id = id
+        self.image_url = image_url
+        self.picture = picture
+        self.name = name
+

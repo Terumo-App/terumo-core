@@ -17,6 +17,7 @@ python-dotenv = "*"
 cytomine-python-client = "*"
 uvicorn = "*"
 new-api = {path = "."}
+fastapi-pagination = "*"
 
 [dev-packages]
 safety = "*"

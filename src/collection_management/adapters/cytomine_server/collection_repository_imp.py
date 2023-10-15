@@ -7,12 +7,12 @@ from collection_management.domain.collection.collection_entity import (
     CollectionEntity,
 )
 from collection_management.domain.collection.collection_repository_interface import (
-    CollectionRepository,
+    CollectionRepositoryInterface,
 )
 from config.environment import EnvironmentSettings
 
 
-class CytomineRepository(CollectionRepository):
+class CollectionRepositoryImp(CollectionRepositoryInterface):
     _cytomine: CytomineWrapper
     _config: EnvironmentSettings
 
