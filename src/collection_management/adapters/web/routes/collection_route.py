@@ -24,7 +24,7 @@ collection_router = APIRouter(prefix='/v1/collection')
 def get_collections(body: CollectionRequest):
     try:
         list_collection_usecase = ListCollectionUseCase(
-            CytomineRepository(env, body.primary_key, body.public_key)
+            CytomineRepository(env, body.public_key, body.private_key)
         )
 
         projects = list_collection_usecase.execute()
@@ -38,7 +38,7 @@ def get_collections(body: CollectionRequest):
 def create_collection(body: CollectionCretionRequest):
     try:
         create_collection_usecase = CreateColllectionUseCase(
-            CytomineRepository(env, body.primary_key, body.public_key)
+            CytomineRepository(env, body.public_key, body.private_key)
         )
 
         project = create_collection_usecase.execute(body.collection_name)
