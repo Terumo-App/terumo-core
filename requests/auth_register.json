@@ -1,0 +1,10 @@
+
+// http://0.0.0.0:8000/v1/auth/signup
+
+{
+    "username": "maods4",
+    "password": "maods123",
+    "first_name": "MAtheus",
+    "last_name": "Augusto",
+    "email": "maods@gmail.com"
+}

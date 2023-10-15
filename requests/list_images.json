@@ -1,0 +1,9 @@
+
+// http://0.0.0.0:8000/v1/image/?page=1&size=5
+
+{
+    "private_key": "98a22af6-17de-491a-88d3-3e798ada03fb",
+    "collection_id": 73025,
+    "public_key": "e4c84130-d5d4-41bd-8db0-0384339f31c2"
+
+}
