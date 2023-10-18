@@ -2,6 +2,6 @@
 @echo off
 setlocal
 set PYTHONPATH=pdw;%PYTHONPATH%
-python src/main.py
+python api/main.py
 endlocal
 

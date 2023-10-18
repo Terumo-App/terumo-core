@@ -81,6 +81,8 @@ To run the application, follow these steps:
    pipenv install --dev isort # import sorting
    pipenv install --dev taskipy # automation scripting
    pipenv install --dev safety
+
+   pipenv install celery[redis]
    
    pipenv install --dev safety pytest pytest-cov blue isort taskipy
    ```

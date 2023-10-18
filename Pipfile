@@ -18,6 +18,7 @@ cytomine-python-client = "*"
 uvicorn = "*"
 new-api = {path = "."}
 fastapi-pagination = "*"
+celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
 safety = "*"

@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  rabbit:
+    hostname: rabbit
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "15673:15672"
+      - "5673:5672"
+    networks:
+      - mynetwork
+
+  celery_index_worker:
+    build: './celery_index_worker'
+    command: celery -A tasks worker --loglevel=info
+    user: nobody
+    volumes:
+      - //wsl.localhost/Ubuntu/home/maodsunix/cytomine/data/images:/file_storage
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_RESULT_BACKEND=rpc://
+    depends_on:
+      - rabbit
+    networks:
+      - mynetwork
+
+  flower:
+    container_name: flower
+    build: './celery_index_worker'
+    command: celery -A tasks flower --port=5555
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_RESULT_BACKEND=rpc://
+    depends_on:
+      - rabbit
+      - celery_index_worker
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
