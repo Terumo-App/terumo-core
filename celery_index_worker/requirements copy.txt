@@ -1,0 +1,11 @@
+# -i https://pypi.org/simple
+--extra-index-url https://packagecloud.io/cytomine-uliege/Cytomine-python-client/pypi/simple
+celery==5.3.4
+flower
+httpx
+efficientnet-pytorch==0.7.1
+numpy==1.25.1
+torch==2.0.1
+torchvision==0.15.2
+pillow==10.0.0
+cytomine-python-client==2.3.4

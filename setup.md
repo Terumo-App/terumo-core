@@ -41,3 +41,5 @@
 
 - [ ] Upload image(s) To Collection (front/back)
 - [ ] Trigger Indexing (front/back)
+
+- [ ] Image query (front/back)

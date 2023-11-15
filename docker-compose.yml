@@ -1,5 +1,20 @@
 version: "3.7"
 services:
+  core_api:
+    build: './api'
+    command: python main.py --reload=False
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_RESULT_BACKEND=rpc://
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbit
+    networks:
+      - mynetwork
+  
+  
+  
   rabbit:
     hostname: rabbit
     image: "rabbitmq:3-management"
@@ -14,17 +29,18 @@ services:
 
   celery_index_worker:
     build: './celery_index_worker'
-    command: celery -A tasks worker --loglevel=info
-    user: nobody
+    # command: celery -A tasks worker --loglevel=info
+    command: celery -A tasks worker --loglevel=DEBUG
     volumes:
-      - //wsl.localhost/Ubuntu/home/maodsunix/cytomine/data/images:/file_storage
+      - \\wsl$\Ubuntu\home\maodsunix\cytomine\data\images:/app/file_storage
     environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_BROKER_URL=amqp://admin:mypass@localhost:5673
       - CELERY_RESULT_BACKEND=rpc://
     depends_on:
       - rabbit
-    networks:
-      - mynetwork
+    network_mode: "host"
+    # networks:
+    #   - mynetwork
 
   flower:
     container_name: flower

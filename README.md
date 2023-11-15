@@ -88,7 +88,7 @@ To run the application, follow these steps:
    ```
    - Saving libraries in requirements.
    ```bash
-   pipenv requirements > requirements.txt
+   pipenv requirements > api/requirements.txt
    pipenv requirements --dev-only > requirements.txt
    pipenv requirements --dev > dev-requirements.txt
    ```

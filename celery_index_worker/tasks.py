@@ -2,7 +2,7 @@ import time
 from celery import Celery
 from celery.utils.log import get_task_logger
 import os 
-from celery_index_worker.binary_models.main import start_collection_indexing
+from binary_models.main import start_collection_indexing
 
 
 logger = get_task_logger(__name__)
