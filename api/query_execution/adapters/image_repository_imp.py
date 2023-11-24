@@ -33,7 +33,7 @@ class ImageRepositoryImp(ImageRepositoryInterface):
         self.root_referemce = os.getcwd()
 
     def persist_image_on_file_storage(self, image: ImageFileEntity) -> str:
-        folder_name = './api/query_execution/adapters/image_storage'
+        folder_name = './image_storage'
         # TODO: create routine to delete search images periodcly
         # TODO: Get folder name from env variables
 

@@ -23,7 +23,6 @@ class MilvusDBImp(VectorDBInterface):
 
     def search(self, collection_id, vector, top_k=100):
         coll_name = '_' + str(collection_id)
-        print('cooooooooo', coll_name)
 
         if not utility.has_collection(coll_name):
             raise ValueError('Collection does not exist')

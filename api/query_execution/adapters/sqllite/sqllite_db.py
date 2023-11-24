@@ -4,9 +4,9 @@ from query_execution.domain.image.image_entity import ImageEntity
 from sqlalchemy import Column, Integer, String, Uuid, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from api.query_execution.domain.image.sql_db_interface import SQLDBInterface
+from query_execution.domain.image.sql_db_interface import SQLDBInterface
 
-DB_PATH = 'sqlite:///api/query_execution/adapters/sqllite/image_database.db'
+DB_PATH = 'sqlite:///image_database.db'
 
 base = declarative_base()
 

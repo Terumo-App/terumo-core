@@ -75,18 +75,19 @@ services:
     networks:
       - terumo-network
 
-  # core-api:
-  #   build: './api'
-  #   command: python main.py --reload=False
-  #   environment:
-  #     - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
-  #     - CELERY_RESULT_BACKEND=rpc://
-  #   depends_on:
-  #     - "rabbit"
-  #   networks:
-  #     - terumo-network
-  #   ports:
-  #   - "8000:8000"
+  core-api:
+    build: './api'
+    command: python main.py --reload=False
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_RESULT_BACKEND=rpc://
+      - MIULVAS_HOST=standalone
+    depends_on:
+      - "rabbit"
+    networks:
+      - terumo-network
+    ports:
+    - "8000:8000"
 
   celery-index-worker:
     build: './celery_index_worker'
