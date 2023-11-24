@@ -6,9 +6,6 @@ class BasicRequest(BaseModel):
     public_key: str
 
 
-class CollectionCretionRequest(BasicRequest):
-    collection_name: str
-
-
-class ImageRequest(BasicRequest):
+class SearchRequest(BasicRequest):
+    image_id: str
     collection_id: int

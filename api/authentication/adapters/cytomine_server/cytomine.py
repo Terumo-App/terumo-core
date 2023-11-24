@@ -1,9 +1,8 @@
 from typing import Union
 
+from authentication.domain.user.user_entity import UserEntity
 from cytomine import Cytomine
 from cytomine.models import Project, ProjectCollection, User, UserCollection
-
-from authentication.domain.user.user_entity import UserEntity
 
 
 class CytomineWrapper:

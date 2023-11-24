@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+volumes
+
 # C extensions
 *.so
 # *.pth.tar
@@ -131,3 +133,5 @@ dmypy.json
 *.png
 *.jpeg
 *.jpg
+
+*image_database.db

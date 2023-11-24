@@ -1,11 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-
 from collection_management.adapters.cytomine_server.collection_repository_imp import (
     CollectionRepositoryImp,
 )
 from collection_management.adapters.web.routes.requests import (
-    CollectionCretionRequest,
     BasicRequest,
+    CollectionCretionRequest,
 )
 from collection_management.usecase.collection_create_usecase import (
     CreateColllectionUseCase,
@@ -14,6 +12,7 @@ from collection_management.usecase.collections_list_usecase import (
     ListCollectionUseCase,
 )
 from config.environment import get_environment_variables
+from fastapi import APIRouter, Depends, HTTPException, status
 
 env = get_environment_variables()
 

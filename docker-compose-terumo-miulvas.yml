@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.7"
 services:
   etcd:
     container_name: milvus-etcd
@@ -17,7 +17,7 @@ services:
       timeout: 20s
       retries: 3
     networks:
-      - terumo-network
+      - mynetwork
 
   minio:
     container_name: milvus-minio
@@ -37,7 +37,7 @@ services:
       timeout: 20s
       retries: 3
     networks:
-      - terumo-network
+      - mynetwork
 
   standalone:
     container_name: milvus-standalone
@@ -61,9 +61,9 @@ services:
       - "etcd"
       - "minio"
     networks:
-      - terumo-network
+      - mynetwork
 
-  rabbit:
+  rabbit_core:
     hostname: rabbit_core
     image: "rabbitmq:3-management"
     environment:
@@ -73,37 +73,47 @@ services:
       - "15673:15672"
       - "5673:5672"
     networks:
-      - terumo-network
+      - mynetwork
 
-  # core-api:
-  #   build: './api'
-  #   command: python main.py --reload=False
-  #   environment:
-  #     - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
-  #     - CELERY_RESULT_BACKEND=rpc://
-  #   depends_on:
-  #     - "rabbit"
-  #   networks:
-  #     - terumo-network
-  #   ports:
-  #   - "8000:8000"
+  core_api:
+    build: './api'
+    command: python main.py --reload=False
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@localhost:5673
+      - CELERY_RESULT_BACKEND=rpc://
+    ports:
+      - "8000:8000"
+      # - "0.0.0.0:8000:8000"
+    depends_on:
+      - rabbit_core
+    # networks:
+    #   - mynetwork
+    extra_hosts:
+    - "maods.homelab.core:172.17.0.1"
+    
 
-  celery-index-worker:
+  celery_index_worker:
     build: './celery_index_worker'
+    # command: celery -A tasks worker --loglevel=info
     command: celery -A tasks worker --loglevel=info --without-heartbeat --pool=solo
+    #  (add --pool=solo if on Windows) concurrency 
+    # command: celery -A tasks worker --loglevel=info  --without-gossip --without-mingle --without-heartbeat -Ofair --pool=solo
+    # command: celery -A tasks worker --loglevel=DEBUG
     volumes:
       - \\wsl$\Ubuntu\home\maodsunix\cytomine\data\images:/app/file_storage
     environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit_core:5672
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
     depends_on:
       - "etcd"
       - "minio"
       - "standalone"
-      - "rabbit"
+      - "rabbit_core"
     networks:
-      - terumo-network
+      - mynetwork
+    extra_hosts:
+    - "maods.homelab.core:172.17.0.1"
 
   flower:
     container_name: flower
@@ -112,21 +122,24 @@ services:
     ports:
       - 5556:5555
     environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      # - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      # - CELERY_RESULT_BACKEND=rpc://
+      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit_core:5672
       - CELERY_RESULT_BACKEND=rpc://
-      - MIULVAS_HOST=standalone
     depends_on:
       - "etcd"
       - "minio"
       - "standalone"
-      - "rabbit"
-      - "celery-index-worker"
+      - rabbit_core
+      - celery_index_worker
     networks:
-      - terumo-network
-    restart: on-failure
+      - mynetwork
+    extra_hosts:
+    - "maods.homelab.core:172.17.0.1"
 
 
 networks:
-  terumo-network:
+  mynetwork:
     driver: bridge
-
+  # bridge:
+  #   external: true

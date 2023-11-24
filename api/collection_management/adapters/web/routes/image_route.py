@@ -1,25 +1,21 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.params import Param
-from fastapi_pagination import Page, paginate, Params
-
 from collection_management.adapters.cytomine_server.image_repository_imp import (
     ImageRepositoryImp,
 )
-from collection_management.adapters.web.routes.responses import (
-    ImageResponse,
-)
 from collection_management.adapters.web.routes.requests import (
-    BasicRequest, ImageRequest
+    BasicRequest,
+    ImageRequest,
 )
-from collection_management.usecase.images_list_usercase import (
-    ImageListUseCase,
-)
+from collection_management.adapters.web.routes.responses import ImageResponse
+from collection_management.usecase.images_list_usercase import ImageListUseCase
+from config.environment import get_environment_variables
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.params import Param
+from fastapi_pagination import Page, Params, paginate
+
 # from collection_management.usecase.image_upload_usecase import (
 
 # )
 
-
-from config.environment import get_environment_variables
 
 env = get_environment_variables()
 
@@ -29,7 +25,6 @@ image_router = APIRouter(prefix='/v1/image')
 @image_router.post('/', response_model=Page[ImageResponse])
 def get_images(
     body: ImageRequest,
-
 ):
     try:
         list_image_usecase = ImageListUseCase(

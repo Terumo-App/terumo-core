@@ -2,10 +2,11 @@ import base64
 import io
 from typing import List, Tuple
 
+from binary_models.binary_base_model import ModelInfer
+from celery.utils.log import get_task_logger
 from PIL import Image
 
-from binary_models.binary_base_model import ModelInfer
-
+logger = get_task_logger(__name__)
 
 MODELS = [
     ModelInfer('HIPER'),

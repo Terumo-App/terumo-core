@@ -24,6 +24,10 @@ torchvision = "==0.15.2"
 efficientnet-pytorch = "==0.7.1"
 flower = "*"
 httpx = "*"
+olefile = "*"
+pymilvus = "*"
+sqlalchemy = "*"
+python-multipart = "*"
 
 [dev-packages]
 safety = "*"

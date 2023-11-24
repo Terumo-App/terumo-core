@@ -1,10 +1,14 @@
 from typing import List
 
-from cytomine import Cytomine
-from cytomine.models import Project, ProjectCollection, ImageInstanceCollection, ImageInstance 
-
 from collection_management.domain.collection.collection_entity import (
     CollectionEntity,
+)
+from cytomine import Cytomine
+from cytomine.models import (
+    ImageInstance,
+    ImageInstanceCollection,
+    Project,
+    ProjectCollection,
 )
 
 
@@ -54,5 +58,7 @@ class CytomineWrapper:
             public_key=self._public_key,
             private_key=self._private_key,
         ):
-            images = ImageInstanceCollection().fetch_with_filter("project", collection_id)
+            images = ImageInstanceCollection().fetch_with_filter(
+                'project', collection_id
+            )
             return images.data()

@@ -1,47 +1,5 @@
-version: "3.7"
+version: "3.8"
 services:
-  rabbit:
-    hostname: rabbit
-    image: "rabbitmq:3-management"
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=mypass
-    ports:
-      - "15673:15672"
-      - "5673:5672"
-    networks:
-      - mynetwork
-
-  celery_index_worker:
-    build: './celery_index_worker'
-    command: celery -A tasks worker --loglevel=info
-    user: nobody
-    # volumes:
-    #   - //wsl.localhost/Ubuntu/home/maodsunix/cytomine/data/images:/file_storage
-    environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
-      - CELERY_RESULT_BACKEND=rpc://
-    depends_on:
-      - rabbit
-    networks:
-      - mynetwork
-
-  flower:
-    container_name: flower
-    build: './celery_index_worker'
-    command: celery -A tasks flower --port=5555
-    ports:
-      - 5556:5555
-    environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
-      - CELERY_RESULT_BACKEND=rpc://
-    depends_on:
-      - rabbit
-      - celery_index_worker
-    networks:
-      - mynetwork
-
-
   etcd:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.5
@@ -58,6 +16,8 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - terumo-network
 
   minio:
     container_name: milvus-minio
@@ -76,6 +36,8 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - terumo-network
 
   standalone:
     container_name: milvus-standalone
@@ -98,7 +60,70 @@ services:
     depends_on:
       - "etcd"
       - "minio"
+    networks:
+      - terumo-network
+
+  rabbit:
+    hostname: rabbit_core
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "15673:15672"
+      - "5673:5672"
+    networks:
+      - terumo-network
+
+  core-api:
+    build: './api'
+    command: python main.py --reload=False
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@localhost:5673
+      - CELERY_RESULT_BACKEND=rpc://
+    depends_on:
+      - "rabbit"
+    network_mode: "host"
+    ports:
+    - "0.0.0.0:8000:8000"
+
+  celery-index-worker:
+    build: './celery_index_worker'
+    command: celery -A tasks worker --loglevel=info --without-heartbeat --pool=solo
+    volumes:
+      - \\wsl$\Ubuntu\home\maodsunix\cytomine\data\images:/app/file_storage
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@localhost:5673
+      - CELERY_RESULT_BACKEND=rpc://
+      - MIULVAS_HOST=localhost
+    depends_on:
+      - "etcd"
+      - "minio"
+      - "standalone"
+      - "rabbit"
+    network_mode: "host"
+
+  flower:
+    container_name: flower
+    build: './celery_index_worker'
+    command: celery -A tasks flower --port=5555
+    ports:
+      - 5556:5555
+    environment:
+      - CELERY_BROKER_URL=amqp://admin:mypass@localhost:5673
+      - CELERY_RESULT_BACKEND=rpc://
+      - MIULVAS_HOST=localhost
+    depends_on:
+      - "etcd"
+      - "minio"
+      - "standalone"
+      - "rabbit"
+      - "celery-index-worker"
+    network_mode: "host"
+    restart: on-failure
 
 
 networks:
-  mynetwork:
+  terumo-network:
+    driver: bridge
+

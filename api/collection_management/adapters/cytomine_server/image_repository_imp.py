@@ -4,7 +4,9 @@ from collection_management.adapters.cytomine_server.cytomine import (
     CytomineWrapper,
 )
 from collection_management.domain.image.image_entity import (
-    ImageEntity, Picture, Name
+    ImageEntity,
+    Name,
+    Picture,
 )
 from collection_management.domain.image.image_repository_interface import (
     ImageRepositoryInterface,
@@ -16,7 +18,9 @@ class ImageRepositoryImp(ImageRepositoryInterface):
     _cytomine: CytomineWrapper
     _config: EnvironmentSettings
 
-    def __init__(self, config: EnvironmentSettings, public_key: str, private_key: str) -> None:
+    def __init__(
+        self, config: EnvironmentSettings, public_key: str, private_key: str
+    ) -> None:
         self._cytomine = CytomineWrapper(config, public_key, private_key)
         self._config = config
 
@@ -27,14 +31,10 @@ class ImageRepositoryImp(ImageRepositoryInterface):
                 id=img.id,
                 image_url=img.preview,
                 picture=Picture(
-                        large=img.preview,
-                        medium=img.preview,
-                        thumbnail=img.thumb
-                    ),
-                name=Name(
-                    last=img.originalFilename
-                    )
-                )
+                    large=img.preview, medium=img.preview, thumbnail=img.thumb
+                ),
+                name=Name(last=img.originalFilename),
+            )
             for img in images
         ]
         return images

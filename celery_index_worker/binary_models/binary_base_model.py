@@ -2,11 +2,9 @@ import os
 
 import numpy as np
 import torch
+from binary_models.model import Net
 from PIL import Image
 from torchvision import transforms
-
-from binary_models.model import Net
-
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 DEVICE = 'cpu'

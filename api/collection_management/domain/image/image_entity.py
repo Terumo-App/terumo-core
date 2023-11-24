@@ -21,9 +21,8 @@ class Name:
 
 
 class ImageEntity:
-    def __init__(self, id: int, image_url: str, picture: Picture, name:Name):
+    def __init__(self, id: int, image_url: str, picture: Picture, name: Name):
         self.id = id
         self.image_url = image_url
         self.picture = picture
         self.name = name
-

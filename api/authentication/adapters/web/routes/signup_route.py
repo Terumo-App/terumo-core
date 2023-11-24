@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-
 from authentication.adapters.cytomine_server.cytomine_repository import (
     CytomineRepository,
 )
 from authentication.adapters.web.routes.requests import SignupRequest
 from authentication.usecase.signup_usecase import SignupUseCase
 from config.environment import get_environment_variables
+from fastapi import APIRouter, Depends, HTTPException, status
 
 env = get_environment_variables()
 

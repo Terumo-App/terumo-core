@@ -16,7 +16,9 @@ class CollectionRepositoryImp(CollectionRepositoryInterface):
     _cytomine: CytomineWrapper
     _config: EnvironmentSettings
 
-    def __init__(self, config: EnvironmentSettings, public_key: str, private_key: str) -> None:
+    def __init__(
+        self, config: EnvironmentSettings, public_key: str, private_key: str
+    ) -> None:
         self._cytomine = CytomineWrapper(config, public_key, private_key)
         self._config = config
 
@@ -26,18 +28,26 @@ class CollectionRepositoryImp(CollectionRepositoryInterface):
             raise ValueError('Error creating collection.')
 
         project = CollectionEntity(
-            proj.id, proj.created, proj.name, proj.numberOfImages,
+            proj.id,
+            proj.created,
+            proj.name,
+            proj.numberOfImages,
             self._get_project_type(proj.name),
-            self._get_project_owner(proj.name)
+            self._get_project_owner(proj.name),
         )
         return project
 
     def list_collections(self) -> List[CollectionEntity]:
         projects = self._cytomine.list_collections()
         projects = [
-            CollectionEntity(p.id, p.created, p.name,
-                             p.numberOfImages, self._get_project_type(p.name),
-                             self._get_project_owner(p.name))
+            CollectionEntity(
+                p.id,
+                p.created,
+                p.name,
+                p.numberOfImages,
+                self._get_project_type(p.name),
+                self._get_project_owner(p.name),
+            )
             for p in projects
         ]
         return projects
@@ -53,16 +63,16 @@ class CollectionRepositoryImp(CollectionRepositoryInterface):
                 project.name,
                 project.numberOfImages,
                 self._get_project_type(project.name),
-                self._get_project_owner(project.name)
+                self._get_project_owner(project.name),
             )
         return False
 
     def _get_project_type(self, project_name: str):
         if project_name == self._config.GLOBAL_PROJECT:
-            return "Public"
-        return "Private"
+            return 'Public'
+        return 'Private'
 
     def _get_project_owner(self, project_name: str):
         if project_name == self._config.GLOBAL_PROJECT:
-            return "Terumo"
-        return "User"
+            return 'Terumo'
+        return 'User'
