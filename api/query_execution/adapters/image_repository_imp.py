@@ -48,7 +48,12 @@ class ImageRepositoryImp(ImageRepositoryInterface):
             f.write(image.binary)
 
         return file_location
-
+    
+    def load_image_from_file_storage(self, image_path: str) -> bytes:
+        with open(image_path, 'rb') as f:
+            binary_image = f.read()
+        return binary_image
+    
     def persist_image_metadata(
         self, file_name: str, image_location: str
     ) -> ImageEntity:

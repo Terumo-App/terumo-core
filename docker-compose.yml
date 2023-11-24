@@ -82,6 +82,7 @@ services:
       - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
+      - CYTOMINE_HOST=http://maods.homelab.core
     depends_on:
       - "rabbit"
     networks:
@@ -98,6 +99,7 @@ services:
       - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
+      - CYTOMINE_HOST=http://maods.homelab.core
     depends_on:
       - "etcd"
       - "minio"

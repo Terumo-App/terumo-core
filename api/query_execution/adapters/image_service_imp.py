@@ -4,6 +4,7 @@ from typing import Any, List, Union
 from config.environment import EnvironmentSettings
 from PIL import Image
 from query_execution.adapters.cytomine_server.cytomine import CytomineWrapper
+from query_execution.adapters.binary_models.binary_extractor_imp import extract
 from query_execution.domain.image.image_entity import (
     ImageFileEntity,
     ImageMetaDataEntity,
@@ -31,10 +32,11 @@ class ImageServiceImp(ImageServiceInterface):
     def load_image(self, image_path: str) -> Image.Image:
         return Image.open(image_path).convert('RGB')
 
-    def extract_attributes(self, image: Image.Image) -> List[int | float]:
+    def extract_attributes(self, image_path: str) -> List[int | float]:
         # TODO IMPLEMENT GRPC CALL
-
-        return [1, 0, 0, 1, 1, 0]
+        vector = extract(image_path)
+        return vector
+        # return [1, 0, 0, 1, 1, 0]
 
     def consolidate_image_info(
         self, img_ids: List[int], img_distances: List[str], collection_id: int

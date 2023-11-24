@@ -16,6 +16,15 @@ class CytomineWrapper:
         self._public_key = public_key
         self._private_key = private_key
 
+    def list_collections(self) -> List[Project]:
+        with Cytomine(
+            host=self._host,
+            public_key=self._public_key,
+            private_key=self._private_key,
+        ):
+            projects = ProjectCollection().fetch()
+            return projects.data()
+        
     def list_images(self, collection_id: int) -> List[ImageMetaDataEntity]:
         with Cytomine(
             host=self._host,

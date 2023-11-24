@@ -33,9 +33,9 @@ class ImageSearchUseCase:
             search_request.image_id
         )
         print(image_path)
-        image = self._image_service.load_image(image_path)
-        attributes = self._image_service.extract_attributes(image)
-        print(f'att {attributes}')
+        # image = self._image_repository.load_image_from_file_storage(image_path)
+        # image = self._image_service.load_image(image_path)
+        attributes = self._image_service.extract_attributes(image_path)
         img_ids, img_dist = self._image_repository.search_similar_images(
             attributes, search_request.collection_id
         )

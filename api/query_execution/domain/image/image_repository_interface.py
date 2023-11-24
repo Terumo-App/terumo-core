@@ -19,6 +19,10 @@ class ImageRepositoryInterface(ABC):
         pass
 
     @abstractmethod
+    def load_image_from_file_storage(self, image_path: str) -> bytes:
+        pass
+    
+    @abstractmethod
     def get_image_path(self, image_id: str) -> str:
         pass
 

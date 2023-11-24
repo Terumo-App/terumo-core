@@ -3,6 +3,7 @@ from binary_models.miulvas import connect_miulvas_db, create_collection
 from celery.utils.log import get_task_logger
 from cytomine import Cytomine
 from cytomine.models import ImageInstanceCollection
+import os
 
 logger = get_task_logger(__name__)
 
@@ -11,6 +12,7 @@ _public_key = 'e4c84130-d5d4-41bd-8db0-0384339f31c2'
 _private_key = '98a22af6-17de-491a-88d3-3e798ada03fb'
 
 _host = 'http://maods.homelab.core'
+HOST = os.getenv('CYTOMINE_HOST')
 
 connect_miulvas_db()
 
@@ -18,7 +20,7 @@ connect_miulvas_db()
 def start_collection_indexing(collection_id: int):
 
     with Cytomine(
-        host=_host, public_key=_public_key, private_key=_private_key
+        host=HOST, public_key=_public_key, private_key=_private_key
     ):
 
         images = ImageInstanceCollection().fetch_with_filter(

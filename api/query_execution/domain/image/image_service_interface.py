@@ -17,7 +17,7 @@ class ImageServiceInterface(ABC):
     # def proccess_image(self, image:Image.Image)-> Any:
     #     pass
     @abstractmethod
-    def extract_attributes(self, image: Image.Image) -> List[int | float]:
+    def extract_attributes(self, image: bytes) -> List[int | float]:
         pass
 
     @abstractmethod

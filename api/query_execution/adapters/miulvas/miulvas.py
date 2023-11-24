@@ -1,5 +1,5 @@
 import os
-
+from typing import Any, List, Tuple
 from pymilvus import Collection, connections, utility
 from query_execution.domain.image.vector_db_interface import VectorDBInterface
 
@@ -20,6 +20,9 @@ class MilvusDBImp(VectorDBInterface):
             host=self.milvus_host,
             port='19530',
         )
+
+    def list_collections(self,)->List[str]:
+        return utility.list_collections()
 
     def search(self, collection_id, vector, top_k=100):
         coll_name = '_' + str(collection_id)
