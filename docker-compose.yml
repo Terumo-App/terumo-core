@@ -67,8 +67,8 @@ services:
     hostname: rabbit_core
     image: "rabbitmq:3-management"
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=mypass
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     ports:
       - "15673:15672"
       - "5673:5672"
@@ -79,10 +79,10 @@ services:
     build: './api'
     command: python main.py --reload=False
     environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_BROKER_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbit:${RABBITMQ_PORT}
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
-      - CYTOMINE_HOST=http://maods.homelab.core
+      - CYTOMINE_HOST=${CYTOMINE_HOST}
     depends_on:
       - "rabbit"
     networks:
@@ -96,10 +96,10 @@ services:
     volumes:
       - \\wsl$\Ubuntu\home\maodsunix\cytomine\data\images:/app/file_storage
     environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_BROKER_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbit:${RABBITMQ_PORT}
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
-      - CYTOMINE_HOST=http://maods.homelab.core
+      - CYTOMINE_HOST=${CYTOMINE_HOST}
     depends_on:
       - "etcd"
       - "minio"
@@ -115,7 +115,7 @@ services:
     ports:
       - 5556:5555
     environment:
-      - CELERY_BROKER_URL=amqp://admin:mypass@rabbit:5672
+      - CELERY_BROKER_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbit:${RABBITMQ_PORT}
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
     depends_on:

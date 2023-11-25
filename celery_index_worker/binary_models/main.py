@@ -8,10 +8,11 @@ import os
 logger = get_task_logger(__name__)
 
 # terumo_admin
-_public_key = 'e4c84130-d5d4-41bd-8db0-0384339f31c2'
-_private_key = '98a22af6-17de-491a-88d3-3e798ada03fb'
+# _public_key = 'e4c84130-d5d4-41bd-8db0-0384339f31c2'
+# _private_key = '98a22af6-17de-491a-88d3-3e798ada03fb'
+_public_key = os.getenv('PUBLIC_KEY')
+_private_key = os.getenv('PRIVATE_KEY')
 
-_host = 'http://maods.homelab.core'
 HOST = os.getenv('CYTOMINE_HOST')
 
 connect_miulvas_db()

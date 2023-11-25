@@ -8,7 +8,7 @@ from pydantic.v1 import BaseSettings
 def get_env_filename():
     runtime_env = os.getenv('ENV')
     # return f".env.{runtime_env}" if runtime_env else ".env"
-    return f'.env.test'
+    return ".env"
 
 
 class EnvironmentSettings(BaseSettings):
