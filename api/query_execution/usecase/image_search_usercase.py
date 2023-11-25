@@ -1,4 +1,5 @@
 from typing import Any, List
+import logging
 
 from query_execution.domain.image.image_entity import (
     ImageEntity,
@@ -12,6 +13,7 @@ from query_execution.domain.image.image_service_interface import (
 )
 from query_execution.domain.image.sql_db_interface import SQLDBInterface
 
+logger = logging.getLogger(__name__)
 
 class ImageSearchUseCase:
     _image_repository: ImageRepositoryInterface
@@ -32,14 +34,14 @@ class ImageSearchUseCase:
         image_path = self._image_repository.get_image_path(
             search_request.image_id
         )
-        print(image_path)
+        logger.debug(f'Image path: {image_path}')
         # image = self._image_repository.load_image_from_file_storage(image_path)
         # image = self._image_service.load_image(image_path)
         attributes = self._image_service.extract_attributes(image_path)
         img_ids, img_dist = self._image_repository.search_similar_images(
             attributes, search_request.collection_id
         )
-        print(f'att {img_ids}')
+        logger.debug(f'att {img_ids}')
         similar_imgs = self._image_service.consolidate_image_info(
             img_ids, img_dist, search_request.collection_id
         )

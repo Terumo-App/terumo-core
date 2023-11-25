@@ -2,7 +2,9 @@ import os
 from typing import Any, List, Tuple
 from pymilvus import Collection, connections, utility
 from query_execution.domain.image.vector_db_interface import VectorDBInterface
+import logging
 
+logger = logging.getLogger(__name__)
 
 class MilvusDBImp(VectorDBInterface):
     def __init__(self):
@@ -10,6 +12,7 @@ class MilvusDBImp(VectorDBInterface):
         self.milvus_host = (
             self.milvus_host if self.milvus_host else 'localhost'
         )
+        print(self.milvus_host)
         self.setup()
 
     def setup(self):
@@ -31,6 +34,7 @@ class MilvusDBImp(VectorDBInterface):
             raise ValueError('Collection does not exist')
 
         collection = Collection(coll_name)
+        collection.load()
 
         search_params = {
             'metric_type': 'L2',
@@ -38,6 +42,8 @@ class MilvusDBImp(VectorDBInterface):
             'ignore_growing': False,
             'params': {'nprobe': 10},
         }
+        print(f'--------------vector')
+        print(f'---: {vector}')
 
         results = collection.search(
             data=[vector],
@@ -52,5 +58,6 @@ class MilvusDBImp(VectorDBInterface):
             output_fields=['vector_id'],
             consistency_level='Strong',
         )
+        # collection.release()
 
         return results[0].ids, results[0].distances
