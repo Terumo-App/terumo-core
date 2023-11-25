@@ -1,27 +1,30 @@
 from pydantic import BaseModel, Field
 
+class Picture(BaseModel):
+    large: str = Field(
+        ...,
+        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=512',
+    )
+    medium: str = Field(
+        ...,
+        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=1000',
+    )
+    thumbnail: str = Field(
+        ...,
+        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=2000',
+    )
+
+
+class Name(BaseModel):
+    last: str = Field(..., example='image.png')
+
 
 class ImageResponse(BaseModel):  # define your model
-    image_id: int = Field(..., example=1)
-    collection_id: int = Field(..., example=25242)
-    originalFilename: str = Field(
+    id: int = Field(..., example=1)
+    image_url: str = Field(
         ...,
-        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=1000',
+        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png',
     )
-    instanceFilename: str = Field(
-        ...,
-        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=1000',
-    )
-    path: str = Field(
-        ...,
-        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=1000',
-    )
-    thumb: str = Field(
-        ...,
-        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=1000',
-    )
-    preview: str = Field(
-        ...,
-        example='http://maods.homelab.core/api/abstractimage/1548/thumb.png?maxSize=1000',
-    )
-    distance: float = Field(..., example=0.5)
+    picture: Picture
+    name: Name
+    score: float = Field(..., example=0.5)

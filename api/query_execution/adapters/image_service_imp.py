@@ -59,8 +59,8 @@ class ImageServiceImp(ImageServiceInterface):
         similar_images = []
         for i, id in enumerate(img_ids):
             for img in images_metadata:
-                if img.image_id == id:
-                    img.distance = img_distances[i]
+                if img.id == id:
+                    img.score = img_distances[i]
                     similar_images.append(img)
                     continue
 

@@ -13,23 +13,33 @@ class ImageEntity:
         self.collection_id = collection_id
 
 
+
+
+
+
+class Picture:
+    def __init__(self, large, medium, thumbnail):
+        self.large = large
+        self.medium = medium
+        self.thumbnail = thumbnail
+
+
+class Name:
+    def __init__(self, last):
+        self.last = last
+
+
+
 class ImageMetaDataEntity:
-    def __init__(
-        self,
-        image_id: int,
-        project: int,
-        originalFilename: str,
-        instanceFilename: str,
-        path: str,
-        thumb: str,
-        preview: str,
-        distance: float = None,
-    ):
-        self.image_id = image_id
-        self.collection_id = project
-        self.originalFilename = originalFilename
-        self.instanceFilename = instanceFilename
-        self.path = path
-        self.thumb = thumb
-        self.preview = preview
-        self.distance = distance
+    def __init__(self, 
+                 id: int, 
+                 image_url: str, 
+                 picture: Picture, 
+                 name: Name,
+                 score: float=None
+                 ):
+        self.id = id
+        self.image_url = image_url
+        self.picture = picture
+        self.name = name
+        self.score = score

@@ -7,7 +7,7 @@ from cytomine.models import (
     Project,
     ProjectCollection,
 )
-from query_execution.domain.image.image_entity import ImageMetaDataEntity
+from query_execution.domain.image.image_entity import ImageMetaDataEntity, Name, Picture
 
 
 class CytomineWrapper:
@@ -39,13 +39,12 @@ class CytomineWrapper:
             for img in images.data():
                 collection.append(
                     ImageMetaDataEntity(
-                        image_id=img.id,
-                        project=img.project,
-                        originalFilename=img.originalFilename,
-                        instanceFilename=img.instanceFilename,
-                        path=img.path,
-                        thumb=img.thumb,
-                        preview=img.preview,
-                    )
+                                        id=img.id,
+                                        image_url=img.preview,
+                                        picture=Picture(
+                                            large=img.preview, medium=img.preview, thumbnail=img.thumb
+                                        ),
+                                        name=Name(last=img.originalFilename),
+                                    )
                 )
             return collection
