@@ -82,6 +82,17 @@ services:
       - CELERY_BROKER_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbit:${RABBITMQ_PORT}
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
+      - DOCKER_VOLUME_DIRECTORY=${DOCKER_VOLUME_DIRECTORY}
+      - API_VERSION=${API_VERSION}
+      - APP_NAME=${APP_NAME}
+      - DEBUG_MODE=${DEBUG_MODE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - HOST=${HOST}
+      - GLOBAL_PROJECT=${GLOBAL_PROJECT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
       - CYTOMINE_HOST=${CYTOMINE_HOST}
     depends_on:
       - "rabbit"
@@ -89,16 +100,27 @@ services:
       - terumo-network
     ports:
     - "8000:8000"
-
+    
   celery-index-worker:
     build: './celery_index_worker'
     command: celery -A tasks worker --loglevel=info --without-heartbeat --pool=solo
     volumes:
-      - \\wsl$\Ubuntu\home\maodsunix\cytomine\data\images:/app/file_storage
+      - ${CYTOMINE_IMAGE_FILE_VOLUME}:/app/file_storage
     environment:
       - CELERY_BROKER_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbit:${RABBITMQ_PORT}
       - CELERY_RESULT_BACKEND=rpc://
       - MIULVAS_HOST=standalone
+      - DOCKER_VOLUME_DIRECTORY=${DOCKER_VOLUME_DIRECTORY}
+      - API_VERSION=${API_VERSION}
+      - APP_NAME=${APP_NAME}
+      - DEBUG_MODE=${DEBUG_MODE}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - HOST=${HOST}
+      - GLOBAL_PROJECT=${GLOBAL_PROJECT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
       - CYTOMINE_HOST=${CYTOMINE_HOST}
     depends_on:
       - "etcd"
