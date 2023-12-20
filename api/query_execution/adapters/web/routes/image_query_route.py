@@ -1,8 +1,10 @@
+from query_execution.usecase.get_query_image_usercase import GetQueryImageUseCase
 from query_execution.adapters.collection_repository_imp import CollectionRepositoryImp
 from query_execution.usecase.collections_list_usecase import ListCollectionUseCase
 from config.environment import get_environment_variables
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi_pagination import Page, paginate
+from fastapi.responses import FileResponse
 from query_execution.adapters.image_repository_imp import ImageRepositoryImp
 from query_execution.adapters.image_service_imp import ImageServiceImp
 from query_execution.adapters.miulvas.miulvas import MilvusDBImp
@@ -73,3 +75,22 @@ def get_collections_available(body: BasicRequest):
         return {'message': 'Success', 'data': projects}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+
+
+
+@image_query_router.get("/{image_id}")
+async def read_image(image_id: str):
+    try:
+        image_search_usecase = GetQueryImageUseCase(
+            image_repository=image_repository,
+  
+        )
+        image_path = image_search_usecase.execute(
+            image_id
+        )
+        return FileResponse(image_path, media_type="image/jpeg")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    
