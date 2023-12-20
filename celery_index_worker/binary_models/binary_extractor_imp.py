@@ -31,6 +31,6 @@ def extract(image_path):
     att = []
     image = Image.open(image_path).convert('RGB')
     for model, name in zip(MODELS, MODELS_NAME):
-        vector.append(model.predict(model.process(image)))
+        vector.append(model.predict_target_prob(model.process(image)))
         att.append(name)
     return vector, att

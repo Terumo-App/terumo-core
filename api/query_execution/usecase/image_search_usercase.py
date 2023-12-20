@@ -38,11 +38,14 @@ class ImageSearchUseCase:
         # image = self._image_repository.load_image_from_file_storage(image_path)
         # image = self._image_service.load_image(image_path)
         attributes = self._image_service.extract_attributes(image_path)
-        img_ids, img_dist = self._image_repository.search_similar_images(
+        # TODO: get model_atts automatically from somewhere. (ex: get from db)
+        model_atts = ['Hypercellularity','Membranous','Normal','Sclerosis','Podocytopathy','Crescent']
+
+        img_ids, img_dist, img_vecs = self._image_repository.search_similar_images(
             attributes, search_request.collection_id
         )
         logger.debug(f'att {img_ids}')
         similar_imgs = self._image_service.consolidate_image_info(
-            img_ids, img_dist, search_request.collection_id
+            img_ids, img_dist, img_vecs, attributes, model_atts, search_request.collection_id
         )
         return similar_imgs

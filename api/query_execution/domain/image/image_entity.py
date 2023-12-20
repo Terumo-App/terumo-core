@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Dict, List
 
 
 class ImageFileEntity:
@@ -36,10 +37,31 @@ class ImageMetaDataEntity:
                  image_url: str, 
                  picture: Picture, 
                  name: Name,
-                 score: float=None
+                 score: float=None,
+                 vector: List[Dict[str, float]]=None,
+                 query_vector: List[Dict[str, float]]=None,
                  ):
         self.id = id
         self.image_url = image_url
         self.picture = picture
         self.name = name
         self.score = score
+        self.vector = vector
+        self.query_vector = query_vector
+
+    def set_vector(self, vector: List[float], attributes:List[str]):
+        self.vector = []
+        for att, att_name in zip(vector, attributes):
+            self.vector.append({ 
+                "attribute_name": att_name,
+                "probability": att,
+            })
+            
+    def set_query_vector(self, vector: List[float], attributes:List[str]):
+        self.query_vector = []
+        for att, att_name in zip(vector, attributes):
+            self.query_vector.append({ 
+                "attribute_name": att_name,
+                "probability": att,
+            })
+

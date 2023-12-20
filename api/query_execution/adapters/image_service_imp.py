@@ -39,11 +39,17 @@ class ImageServiceImp(ImageServiceInterface):
         # return [1, 0, 0, 1, 1, 0]
 
     def consolidate_image_info(
-        self, img_ids: List[int], img_distances: List[str], collection_id: int
+        self, 
+        img_ids: List[int], 
+        img_distances: List[float],  
+        img_vecs:List[List[float]], 
+        query_vector: List[float],
+        model_atts: List[str],
+        collection_id: int
     ) -> List[ImageMetaDataEntity]:
         images_metadata = self._cytomine.list_images(collection_id)
         similar_images = self._mapsort_distances(
-            images_metadata, img_ids, img_distances
+            images_metadata, img_ids, img_distances, img_vecs, query_vector, model_atts
         )
 
         return similar_images
@@ -52,15 +58,23 @@ class ImageServiceImp(ImageServiceInterface):
         self,
         images_metadata: List[ImageMetaDataEntity],
         img_ids: List[int],
-        img_distances: List[str],
+        img_distances: List[float],
+        img_vecs: List[List[float]],
+        query_vector: List[float],
+        model_atts: List[str],
     ) -> List[ImageMetaDataEntity]:
+        
         img: ImageMetaDataEntity
-
+        dist_threshold=0.6
         similar_images = []
+
         for i, id in enumerate(img_ids):
             for img in images_metadata:
-                if img.id == id:
+                if img.id == id and img_distances[i] >= dist_threshold:
+                # if img.id == id:
                     img.score = img_distances[i]
+                    img.set_vector(img_vecs[i], model_atts)  
+                    img.set_query_vector(query_vector, model_atts) 
                     similar_images.append(img)
                     continue
 

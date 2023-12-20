@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel, Field
 
 class Picture(BaseModel):
@@ -18,6 +19,9 @@ class Picture(BaseModel):
 class Name(BaseModel):
     last: str = Field(..., example='image.png')
 
+class ModelProbability(BaseModel):
+    attribute_name: str
+    probability: float
 
 class ImageResponse(BaseModel):  # define your model
     id: int = Field(..., example=1)
@@ -28,3 +32,5 @@ class ImageResponse(BaseModel):  # define your model
     picture: Picture
     name: Name
     score: float = Field(..., example=0.5)
+    vector: List[ModelProbability]
+    query_vector: List[ModelProbability]

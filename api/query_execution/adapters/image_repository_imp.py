@@ -62,7 +62,7 @@ class ImageRepositoryImp(ImageRepositoryInterface):
 
     def search_similar_images(
         self, attributes: List[int], collection_id: int
-    ) -> Tuple[List[int], List[str]]:
+    ) -> Tuple[List[int], List[float],List[List[float]]]:
         return self._vector_db.search(collection_id, attributes)
 
     def get_image_path(self, image_id: str) -> str:

@@ -135,7 +135,7 @@ services:
     build: './celery_index_worker'
     command: celery -A tasks flower --port=5555
     ports:
-      - 5556:5555
+      - 5555:5555
     environment:
       - CELERY_BROKER_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbit:${RABBITMQ_PORT}
       - CELERY_RESULT_BACKEND=rpc://

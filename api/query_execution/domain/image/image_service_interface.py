@@ -22,6 +22,12 @@ class ImageServiceInterface(ABC):
 
     @abstractmethod
     def consolidate_image_info(
-        self, img_ids: List[int], img_distances: List[str]
+        self, 
+        img_ids: List[int], 
+        img_distances: List[float], 
+        img_vecs: List[List[float]], 
+        query_vector: List[float], 
+        model_atts: List[str],
+        collection_id: int
     ) -> List[ImageMetaDataEntity]:
         pass

@@ -50,12 +50,17 @@ def create_collection(collection_id):
     )
     collection = Collection(name=coll_name, schema=schema)
 
-    index_params = {
-        'metric_type': 'L2',  # Euclidean distance (L2 norm)
-        'index_type': 'IVF_FLAT',
-        'params': {'nlist': 1024},
-    }
+    # index_params = {
+    #     'metric_type': 'L2',  # Euclidean distance (L2 norm)
+    #     'index_type': 'IVF_FLAT',
+    #     'params': {'nlist': 1024},
+    # }
 
+    index_params = {
+    "metric_type":"COSINE", # (Cosine similarity)
+    "index_type":"FLAT", # https://milvus.io/docs/index.md
+    "params":{"nlist":1024}
+    }
     collection.create_index(field_name='vector', index_params=index_params)
 
     return collection
@@ -69,12 +74,18 @@ def search(collection_id, vector, top_k=100):
 
     collection = Collection(coll_name)
 
+    # search_params = {
+    #     'metric_type': 'L2',
+    #     'offset': 5,
+    #     'ignore_growing': False,
+    #     'params': {'nprobe': 10},
+    # }
     search_params = {
-        'metric_type': 'L2',
-        'offset': 5,
-        'ignore_growing': False,
-        'params': {'nprobe': 10},
+    "metric_type": "COSINE", 
+    "offset": 0, 
+    "ignore_growing": False, 
     }
+
 
     results = collection.search(
         data=[vector],
@@ -86,8 +97,8 @@ def search(collection_id, vector, top_k=100):
         expr=None,
         # set the names of the fields you want to
         # retrieve from the search result.
-        output_fields=['vector_id'],
+        output_fields=['vector_id','vector'],
         consistency_level='Strong',
     )
 
-    return results[0].ids, results[0].distances
+    return results

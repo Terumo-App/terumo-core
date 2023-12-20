@@ -12,7 +12,7 @@ class VectorDBInterface(ABC):
     @abstractmethod
     def search(
         self, collection_id: int, vector: List[int | float], top_k: int
-    ) -> Tuple[List[int], List[str]]:
+    ) -> Tuple[List[int], List[float],List[List[float]]]:
         pass
 
     @abstractmethod

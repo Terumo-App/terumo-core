@@ -27,7 +27,7 @@ class MilvusDBImp(VectorDBInterface):
     def list_collections(self,)->List[str]:
         return utility.list_collections()
 
-    def search(self, collection_id, vector, top_k=100):
+    def search(self, collection_id, vector, top_k=100)-> Tuple[List[int], List[float],List[List[float]]]:
         coll_name = '_' + str(collection_id)
 
         if not utility.has_collection(coll_name):
@@ -37,10 +37,9 @@ class MilvusDBImp(VectorDBInterface):
         collection.load()
 
         search_params = {
-            'metric_type': 'L2',
-            'offset': 5,
-            'ignore_growing': False,
-            'params': {'nprobe': 10},
+        "metric_type": "COSINE", 
+        "offset": 0, 
+        "ignore_growing": False, 
         }
         print(f'--------------vector')
         print(f'---: {vector}')
@@ -55,9 +54,18 @@ class MilvusDBImp(VectorDBInterface):
             expr=None,
             # set the names of the fields you want to
             # retrieve from the search result.
-            output_fields=['vector_id'],
+            output_fields=['vector_id','vector'],
             consistency_level='Strong',
         )
-        # collection.release()
+        collection.release()
 
-        return results[0].ids, results[0].distances
+        ids = []
+        distances = []
+        vectors = []
+
+        for i in range(len(results[0])):
+            vectors.append(results[0][i].entity.vector)
+            ids.append(results[0][i].entity.vector_id)
+            distances.append(results[0][i].distance)
+
+        return ids, distances, vectors
