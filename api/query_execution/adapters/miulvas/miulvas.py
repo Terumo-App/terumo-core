@@ -27,7 +27,7 @@ class MilvusDBImp(VectorDBInterface):
     def list_collections(self,)->List[str]:
         return utility.list_collections()
 
-    def search(self, collection_id, vector, top_k=100)-> Tuple[List[int], List[float],List[List[float]]]:
+    def search(self, collection_id, vector, top_k=1000)-> Tuple[List[int], List[float],List[List[float]]]:
         coll_name = '_' + str(collection_id)
 
         if not utility.has_collection(coll_name):
